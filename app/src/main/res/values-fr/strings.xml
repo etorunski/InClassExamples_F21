@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"  InClassExamples_F21    "</string>
+    <string name="hello_message">Bonjour a tous</string>
+    <string name="button_text">Je suis un bouton</string>
+</resources>
+<!-- 1) values-fr-rFR -->
+<!-- 2) values-fr -->
+<!-- 3) values -->
+
+<!-- 1) values-ko-rKR -->
+    <!-- 2) values-ko -->
+    <!-- 3) values -->
