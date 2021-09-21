@@ -1,10 +1,5 @@
 <resources>
     <string name="app_name">  InClassExamples_F21    </string>
-
     <string name="hello_message"> Hello world   </string>
-
     <string name="button_text"> I\'m a button </string>
-
-       <!--Short form of <Window> </Window> with no text between -->
-
 </resources>
