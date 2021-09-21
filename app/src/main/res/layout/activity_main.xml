@@ -26,7 +26,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
-<!-- values-fr-rCA -->
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
