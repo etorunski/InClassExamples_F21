@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,11 +24,13 @@ public class MainActivity extends AppCompatActivity {
 
         sw.setOnCheckedChangeListener( ( btn, onOrOff) -> {
             radio.setChecked(onOrOff);
+
+            Toast.makeText(MainActivity.this, "You clicked on switch", Toast.LENGTH_LONG).show();
       });
 
 
         cb.setOnCheckedChangeListener( ( b, c) -> {
-
+            Toast.makeText(MainActivity.this, "You clicked on checkbow", Toast.LENGTH_SHORT).show();
            if(c)
                radio.setChecked(true);
            else
