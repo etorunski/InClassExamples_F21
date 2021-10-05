@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cst2335.torunse">
 
+
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InClassExamples_F21">
         <activity
+            android:name=".SecondActivity"
+            android:exported="true" >
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -17,6 +25,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
     </application>
 
