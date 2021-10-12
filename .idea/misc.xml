@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3148148148148148" />
         <entry key="app/src/main/res/layout/activity_second.xml" value="0.21666666666666667" />
+        <entry key="app/src/main/res/layout/chatlayout.xml" value="0.30052083333333335" />
+        <entry key="app/src/main/res/layout/chatroom.xml" value="0.25" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>
