@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">  InClassExamples_F21    </string>
-    <string name="hello_message"> Hello world   </string>
-    <string name="button_text"> I\'m a button </string>
+    <string name="hello_message">Type in your password:</string>
+    <string name="button_text">Login</string>
 </resources>
