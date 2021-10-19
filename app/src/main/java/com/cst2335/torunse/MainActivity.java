@@ -10,8 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-/** This page lets the user type in a pass...
- *
+/** This page lets the user type in a pass..
  * @author Eric Torunski
  * @version 1.0
  */
