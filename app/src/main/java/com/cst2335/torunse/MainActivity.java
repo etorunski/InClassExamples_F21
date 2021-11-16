@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button loginButton;
 
     EditText passwordText;
-    String serverUrl = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+    String serverUrl = "https://api.pexels.com/v1/search?query=%s";
 
     @Override   //public  static void main(String args[])
                 //this is our starting point
@@ -67,6 +67,17 @@ public class MainActivity extends AppCompatActivity {
                      //Must be done on other thread:
                      URL url = new URL(fullUrl); //build the server connection
                      HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connect to server
+
+//CARBON DIOXIDE: urlConnection.setRequestProperty("Authorization", "bearer yourToken"  );
+//CARBON DIOXIDE:urlConnection.setRequestProperty("Content-Type", "application/json"  );
+
+
+// PEXELS:  urlConnection.setRequestProperty("Authorization", "TOKEN"  );
+
+
+//OWLBot:          urlConnection.setRequestProperty("Authorization", "token yourToken"  );
+
+
                      InputStream in = new BufferedInputStream(urlConnection.getInputStream()); //read the information
 
                      String jsonString = (new BufferedReader(
@@ -75,7 +86,21 @@ public class MainActivity extends AppCompatActivity {
                              .collect(Collectors.joining("\n"));
 
                      JSONObject theDocument = new JSONObject( jsonString );
-                     JSONObject mainObj = theDocument.getJSONObject("main");
+
+/*
+                     //for covid:
+                     JSONArray dataArray = theDocument.getJSONArray("data");
+                     for(int i = 0; i < dataArray.length(); i++)
+                     {
+                         JSONObject objAtI = dataArray.getJSONObject(i);
+
+                     }
+
+ */
+
+                     int i = 0;
+
+                  /*   JSONObject mainObj = theDocument.getJSONObject("main");
                      double temp = mainObj.getDouble("temp");
                     JSONArray weatherArray = theDocument.getJSONArray("weather");
                     JSONObject pos0Obj = weatherArray.getJSONObject(0);
@@ -92,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                          //running on GUI Thread
                      } );
 
-
+*/
                     }
                      catch(JSONException je){
                          Log.e("JSONException", je.getMessage() );
