@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -67,9 +69,19 @@ public class MainActivity extends AppCompatActivity {
                      //Must be done on other thread:
                      URL url = new URL(fullUrl); //build the server connection
                      HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connect to server
-
+String distanceFromUser = "";
+String API_KEY = "";
 //CARBON DIOXIDE: urlConnection.setRequestProperty("Authorization", "bearer yourToken"  );
 //CARBON DIOXIDE:urlConnection.setRequestProperty("Content-Type", "application/json"  );
+                     OutputStream outStream = urlConnection.getOutputStream();
+                     OutputStreamWriter outStreamWriter = new OutputStreamWriter(outStream, "UTF-8");
+                     outStreamWriter.write(
+                             String.format("{\"type\":\"Vehicle\", \"distance_unit\": \"km\",\"distance_value\":\"%s\",\"vehicle_model_id\":\"%s\"}",
+                                     distanceFromUser, API_KEY));
+                     outStreamWriter.flush();
+                     outStreamWriter.close();
+                     outStream.close();
+//End of CARBON DIOXIDE Exmample
 
 
 // PEXELS:  urlConnection.setRequestProperty("Authorization", "TOKEN"  );
