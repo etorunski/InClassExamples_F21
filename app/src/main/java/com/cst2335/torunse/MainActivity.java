@@ -1,5 +1,7 @@
 package com.cst2335.torunse;
 
+
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -39,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     /** This is the loginButton at the bottom of the screen*/
     Button loginButton;
+    String temp, minTemp, maxTemp, icon;
 
     EditText passwordText;
-    String serverUrl = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+    String serverUrl = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=7e943c97096a9784391a981c4d878b22&units=metric&mode=xml";
 
     @Override   //public  static void main(String args[])
                 //this is our starting point
@@ -52,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.button);
         passwordText = findViewById(R.id.editText);
         feedbackText = findViewById(R.id.textView);
+
+
+        temp = minTemp= maxTemp= icon= "";
+
 
         loginButton.setOnClickListener( (click) -> {
 
@@ -64,29 +73,65 @@ public class MainActivity extends AppCompatActivity {
                     //encodes the string
                     String fullUrl =  String.format(serverUrl, URLEncoder.encode(cityName, "UTF-8"));
 
+
+
+
                      //Must be done on other thread:
                      URL url = new URL(fullUrl); //build the server connection
                      HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connect to server
                      InputStream in = new BufferedInputStream(urlConnection.getInputStream()); //read the information
 
-                     String jsonString = (new BufferedReader(
-                             new InputStreamReader(in, StandardCharsets.UTF_8)
-                     )).lines()
-                             .collect(Collectors.joining("\n"));
+                     //XML Pull Parser :
 
-                     JSONObject theDocument = new JSONObject( jsonString );
-                     JSONObject mainObj = theDocument.getJSONObject("main");
-                     double temp = mainObj.getDouble("temp");
-                    JSONArray weatherArray = theDocument.getJSONArray("weather");
-                    JSONObject pos0Obj = weatherArray.getJSONObject(0);
-                    String icon = pos0Obj.getString( "icon");
+                     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                     factory.setNamespaceAware(false);
+                     XmlPullParser xpp = factory.newPullParser();
+                     xpp.setInput( in  , "UTF-8");
 
-                    //can only setText on GUI thread:
+                    //results = rawQuery()
+                    /*
+                    while(results.next()){
+                    get data from columns:
+                    }
+                    //read all the SQL data
+
+                     */
+                     //loop over the document:
+                     int nextEvent;
+                     while( (nextEvent = xpp.next())  != xpp.END_DOCUMENT ) //still data to read
+                     {
+                         switch(nextEvent) //this can be 1 of 5 things:
+                         {
+                             case XmlPullParser.START_TAG:
+                                    String tagName = xpp.getName();
+                                    if(tagName.equals(  "temperature"))
+                                    { //currently in <temperature>
+                                         temp = xpp.getAttributeValue(null, "value");
+                                         minTemp = xpp.getAttributeValue(null, "min");
+                                         maxTemp = xpp.getAttributeValue(null, "max");
+                                    }
+                                    else if(tagName.equals("weather"))
+                                    { //currently in <weather>
+                                         icon = xpp.getAttributeValue(null, "icon");
+                                    }
+                                 break;
+                             case XmlPullParser.TEXT:
+
+                                 break;
+                             case XmlPullParser.END_TAG:
+
+                                 break;
+
+                         }
+                     }
+                     //can only setText on GUI thread:
 
                      runOnUiThread( () -> {
                          //running on GUI Thread
+//need temp, icon, max, min, declare outside the loop:
 
-                         feedbackText.setText("Temperature is:" + temp);
+                         feedbackText.setText(
+                                 String.format("Temperature is:%s \n Max temp: %s, \n Min Temp:%s", temp, maxTemp, minTemp));
 
 
                          //running on GUI Thread
@@ -94,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-                     catch(JSONException je){
-                         Log.e("JSONException", je.getMessage() );
+                     catch(org.xmlpull.v1.XmlPullParserException je){
+                         Log.e("XML pull exception", je.getMessage() );
                      }
                      catch(IOException ioe){
                          Log.e("IOException", ioe.getMessage() );
