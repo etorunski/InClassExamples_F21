@@ -9,6 +9,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
 
 /** This page lets the user type in a pass..
  * @author Eric Torunski
@@ -23,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     Button loginButton;
 
     EditText passwordText;
+    String serverUrl = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=7e943c97096a9784391a981c4d878b22&units=metric";
 
     @Override   //public  static void main(String args[])
                 //this is our starting point
@@ -35,10 +54,56 @@ public class MainActivity extends AppCompatActivity {
         feedbackText = findViewById(R.id.textView);
 
         loginButton.setOnClickListener( (click) -> {
-            String password = passwordText.getText().toString(); // ""
 
-            if( checkPasswordComplexity( password ) )
-                feedbackText.setText("Your password is complex enough");
+            String cityName = passwordText.getText().toString(); // ""
+             Executor newThread = Executors.newSingleThreadExecutor();
+                               //Run function
+             newThread.execute( ( ) -> {
+                 //done on a second processor:
+                 try {
+                    //encodes the string
+                    String fullUrl =  String.format(serverUrl, URLEncoder.encode(cityName, "UTF-8"));
+
+                     //Must be done on other thread:
+                     URL url = new URL(fullUrl); //build the server connection
+                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connect to server
+                     InputStream in = new BufferedInputStream(urlConnection.getInputStream()); //read the information
+
+                     String jsonString = (new BufferedReader(
+                             new InputStreamReader(in, StandardCharsets.UTF_8)
+                     )).lines()
+                             .collect(Collectors.joining("\n"));
+
+                     JSONObject theDocument = new JSONObject( jsonString );
+                     JSONObject mainObj = theDocument.getJSONObject("main");
+                     double temp = mainObj.getDouble("temp");
+                    JSONArray weatherArray = theDocument.getJSONArray("weather");
+                    JSONObject pos0Obj = weatherArray.getJSONObject(0);
+                    String icon = pos0Obj.getString( "icon");
+
+                    //can only setText on GUI thread:
+
+                     runOnUiThread( () -> {
+                         //running on GUI Thread
+
+                         feedbackText.setText("Temperature is:" + temp);
+
+
+                         //running on GUI Thread
+                     } );
+
+
+                    }
+                     catch(JSONException je){
+                         Log.e("JSONException", je.getMessage() );
+                     }
+                     catch(IOException ioe){
+                         Log.e("IOException", ioe.getMessage() );
+                     }
+
+                 //end of the thread
+             } ); //end of newThread.execute()
+
 
         });
     }

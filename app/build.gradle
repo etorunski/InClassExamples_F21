@@ -13,6 +13,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        minSdkVersion 24
+        targetSdkVersion 31
     }
 
     buildTypes {
@@ -25,6 +27,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    compileSdkVersion 31
+    buildToolsVersion '32.0.0 rc1'
 }
 
 dependencies {
