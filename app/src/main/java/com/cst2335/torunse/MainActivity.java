@@ -1,13 +1,26 @@
 package com.cst2335.torunse;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,14 +47,27 @@ import java.util.stream.Collectors;
  */
 
 public class MainActivity extends AppCompatActivity {
+
+    float oldSize = 14.0f;
+
     /** This textView shows the feedback on the screen*/
     TextView feedbackText;
 
     /** This is the loginButton at the bottom of the screen*/
     Button loginButton;
 
+    Toolbar myToolbar;
     EditText passwordText;
     String serverUrl = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=7e943c97096a9784391a981c4d878b22&units=metric";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override   //public  static void main(String args[])
                 //this is our starting point
@@ -49,9 +75,47 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState); //calls parent onCreate()
         setContentView( R.layout.activity_main ); //loads XML on screen
 
+        myToolbar = findViewById(R.id.toolbar);
         loginButton = findViewById(R.id.button);
         passwordText = findViewById(R.id.editText);
         feedbackText = findViewById(R.id.textView);
+
+        setSupportActionBar(myToolbar);//causes onCreateOptionsMenu() to be called
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, myToolbar, R.string.open, R.string.close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+
+        NavigationView navView = findViewById(R.id.popout_menu);
+        navView.setNavigationItemSelectedListener( (item) -> {
+            switch(item.getItemId())
+            {
+                case R.id.show_edit:
+                    passwordText.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.hide_edit:
+                    passwordText.setVisibility(View.INVISIBLE);
+                    break;
+            }
+//close the drawer:
+            drawer.closeDrawer(GravityCompat.START);
+            return false;});
+
+        BottomNavigationView bottomView = findViewById(R.id.bottomMenu);
+        bottomView.setOnItemSelectedListener((item) -> {
+            switch(item.getItemId())
+            {
+                case R.id.show_edit:
+                    passwordText.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.hide_edit:
+                    passwordText.setVisibility(View.INVISIBLE);
+                    break;
+            }
+            return false;
+        });
 
         loginButton.setOnClickListener( (click) -> {
 
@@ -165,5 +229,26 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
+    }
+
+
+    @Override     //onNavigationItemSelected(MenuItem item)
+    public boolean onOptionsItemSelected( MenuItem item) {
+        //what is the id of the item that was clicked?
+
+        switch(item.getItemId())
+        {
+            case R.id.hide_views:
+                loginButton.setVisibility(View.INVISIBLE); //Hide the button
+                break;
+            case R.id.refresh:
+                oldSize++;
+                passwordText.setTextSize(oldSize);
+                loginButton.setVisibility(View.VISIBLE);
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
