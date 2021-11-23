@@ -2,6 +2,7 @@ package com.cst2335.torunse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -245,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
                 oldSize++;
                 passwordText.setTextSize(oldSize);
                 loginButton.setVisibility(View.VISIBLE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("Type and click the button").create().show();
                 break;
 
         }
