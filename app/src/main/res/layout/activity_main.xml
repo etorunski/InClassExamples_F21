@@ -2,72 +2,8 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-<androidx.appcompat.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/toolbar"/>
-
-<androidx.drawerlayout.widget.DrawerLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/drawer_layout">
-
-<!--What's on screen: -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   android:orientation="vertical">
-
-
-
-    <!--   @string means in strings.xml   -->
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_message"/>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/button_text" />
-
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"/>
-
-    <Space android:layout_width="wrap_content"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"/>
-    <!-- halfway up the screen:-->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="match_parent"
-        app:menu="@menu/popout_menu"
-        android:id="@+id/bottomMenu"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
-
-
-    <!-- On the pop-out menu-->
-<com.google.android.material.navigation.NavigationView
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:id="@+id/popout_menu"
-    android:layout_gravity="start"
-    android:fitsSystemWindows="true"
-    app:headerLayout="@layout/popout_header"
-    app:menu="@menu/popout_menu"
-    />
-
-
-</androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>
