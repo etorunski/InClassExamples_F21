@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Button loginButton;
 
     EditText passwordText;
-    String serverUrl = "https://api.pexels.com/v1/search?query=%s";
+    String serverUrl = "https://www.carboninterface.com/api/v1/estimates";//  //"https://api.pexels.com/v1/search?query=%s";
 
     @Override   //public  static void main(String args[])
                 //this is our starting point
@@ -69,12 +69,17 @@ public class MainActivity extends AppCompatActivity {
                      //Must be done on other thread:
                      URL url = new URL(fullUrl); //build the server connection
                      HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection(); //connect to server
-String distanceFromUser = "";
+                     urlConnection.setRequestMethod("POST");
+
+String distanceFromUser = "50";
 String API_KEY = "";
-String dataString = String.format("{\"type\":\"Vehicle\", \"distance_unit\": \"km\",\"distance_value\":\"%s\",\"vehicle_model_id\":\"%s\"}",
-                        distanceFromUser, API_KEY);
-//CARBON DIOXIDE: urlConnection.setRequestProperty("Authorization", "bearer yourToken"  );
-//CARBON DIOXIDE:urlConnection.setRequestProperty("Content-Type", "application/json"  );
+String dataString = String.format("{\"type\":\"vehicle\", \"distance_unit\": \"km\",\"distance_value\":\"%s\",\"vehicle_model_id\":\"%s\"}",
+                        distanceFromUser, "8a22e500-10df-49c9-abad-9d84e2156cae");
+
+//CARBON DIOXIDE:
+
+urlConnection.setRequestProperty("Authorization", "Bearer PaMSiTFKUSgZeq4DmPXAmA"  );
+urlConnection.setRequestProperty("Content-Type", "application/json"  );
                      OutputStream outStream = urlConnection.getOutputStream();
                      OutputStreamWriter outStreamWriter = new OutputStreamWriter(outStream, "UTF-8");
                      outStreamWriter.write(dataString );
@@ -87,7 +92,7 @@ String dataString = String.format("{\"type\":\"Vehicle\", \"distance_unit\": \"k
 // PEXELS:  urlConnection.setRequestProperty("Authorization", "TOKEN"  );
 
 
-//OWLBot:          urlConnection.setRequestProperty("Authorization", "token yourToken"  );
+      //owlbot: urlConnection.setRequestProperty("Authorization", "token 15c881db0d7d5f48aa8ae39ab02a65119e2f7b6d"  );
 
 
                      InputStream in = new BufferedInputStream(urlConnection.getInputStream()); //read the information
