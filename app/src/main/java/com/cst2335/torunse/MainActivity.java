@@ -2,8 +2,18 @@ package com.cst2335.torunse;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,10 +55,41 @@ public class MainActivity extends AppCompatActivity {
     EditText passwordText;
     String serverUrl = "https://www.carboninterface.com/api/v1/estimates";//  //"https://api.pexels.com/v1/search?query=%s";
 
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+
+
+    class StepCountListener implements SensorEventListener {
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            //the reading has changed, taken more steps
+                float [] reading = event.values;
+                Log.i("Step count:", Float.toString( reading[0] ));
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//more for GPS sensors where accuracy changes
+        }
+    }
+
+
     @Override   //public  static void main(String args[])
                 //this is our starting point
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); //calls parent onCreate()
+
+        //connect to the sensors:
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD );//for step counter
+
+mSensorManager.registerListener( new StepCountListener() , mSensor,  SensorManager.SENSOR_DELAY_NORMAL );
+
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,  WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView( R.layout.activity_main ); //loads XML on screen
 
         loginButton = findViewById(R.id.button);
@@ -56,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
         feedbackText = findViewById(R.id.textView);
 
         loginButton.setOnClickListener( (click) -> {
+
+            Vibrator v = (Vibrator)MainActivity.this.getSystemService(Context.VIBRATOR_SERVICE);
+            // Vibrate for 500 milliseconds​
+            //v.vibrate(2500);
+            int [] amplitudes = new int[] {255, 0,     64,   128}; //max 255
+            long [] pattern = new long[] {1500, 1500, 1000, 1000};
+v.vibrate(  VibrationEffect.createWaveform(pattern, amplitudes, -1) );
 
             String cityName = passwordText.getText().toString(); // ""
              Executor newThread = Executors.newSingleThreadExecutor();
