@@ -77,7 +77,6 @@ String dataString = String.format("{\"type\":\"vehicle\", \"distance_unit\": \"k
                         distanceFromUser, "8a22e500-10df-49c9-abad-9d84e2156cae");
 
 //CARBON DIOXIDE:
-
 urlConnection.setRequestProperty("Authorization", "Bearer PaMSiTFKUSgZeq4DmPXAmA"  );
 urlConnection.setRequestProperty("Content-Type", "application/json"  );
                      OutputStream outStream = urlConnection.getOutputStream();
